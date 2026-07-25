@@ -15,15 +15,15 @@ public class FCFS {
             System.out.println("Invalid input. Please enter a number between 3 and 10.");
         }
         
-        // Arrays to store process details
+        // Arrays to store the process details
         String[] processID = new String[n];
         int[] arrivalTime = new int[n];
         int[] burstTime = new int[n];
         
-        // 2. Input Process details and validate uniqueness (Primary Keys)
+        // 2. Inputing the process details and validate uniqueness (like a Primary Key)
         for (int i = 0; i < n; i++) {
             
-            // Validate unique Process ID (Acts as Primary Key)
+            // Validate unique Process ID (Acts as a Primary Key for each process ofc)
             while (true) {
                 System.out.print("Enter process ID for Process" + (i + 1) + ": ");
                 String id = scanner.next();
