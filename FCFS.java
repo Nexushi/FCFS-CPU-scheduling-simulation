@@ -235,7 +235,7 @@ public class FCFS {
 
         System.out.println(topStr);
         System.out.println(bottomStr);
-        System.out.println("-----------------------------------------\\n");
+        System.out.println("-----------------------------------------");
         
         scanner.close();
     }
