@@ -198,6 +198,45 @@ public class FCFS {
         System.out.println("\nAverage waiting time: " + (totalWaitingTime / n)); // THE AVERAGE RESULTS FOR WAITING TIME
         System.out.println("Average turn-around time: " + (totalTurnAroundTime / n)); // THE AVERAGE RESULTS FOR TURN-AROUND TIME
         
+        // 6. Gantt chart output
+        System.out.println("\n-----------------------------------------");
+        System.out.println("Gantt Chart:");
+
+        String topStr = "";
+        String bottomStr = "";
+        int timeTrack = 0;
+
+        for (int i = 0; i < n; i++) { // IF the CPU is idle waiting for the next process
+            if (timeTrack < arrivalTime[i]) {
+                topStr += "| Idle ";
+                bottomStr += timeTrack + "     ";
+                int spaces = 9 - String.valueOf(timeTrack).length();
+                for (int s = 0; s < spaces; s++) {
+                    bottomStr += " ";
+                }
+                timeTrack = arrivalTime[i];
+            }
+
+            // Process execution
+            topStr += "| " + processID[i] + " ";
+            bottomStr += timeTrack + "     ";
+
+            // Calclate spaces based on Process ID length and time length to keep the Gantt chart aligned
+            int spaces = 7 +  processID[i].length() - String.valueOf(timeTrack).length();
+            for (int s = 0; s < spaces; s++) {
+                bottomStr += " ";
+            }
+            
+            timeTrack += burstTime[i];
+        }
+
+        topStr += "|";
+        bottomStr += timeTrack; // Add the final time at the end of the Gantt chart
+
+        System.out.println(topStr);
+        System.out.println(bottomStr);
+        System.out.println("-----------------------------------------\\n");
+        
         scanner.close();
     }
 }
