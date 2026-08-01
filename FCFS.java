@@ -8,9 +8,19 @@ public class FCFS {
         int n = 0;
         while (true) {
             System.out.print("Enter the no. of process (3-10): ");
-            n = scanner.nextInt();
-            if (n >= 3 && n <= 10) {
-                break;
+            String numInput = scanner.nextLine().trim();
+            
+            if (numInput.isEmpty()) {
+                System.out.println("Warning: Input cannot be empty. Please try again.");
+                continue;
+            }
+            try {
+                n = Integer.parseInt(numInput);
+                if (n >= 3 && n <= 10) {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                // Skips to the invalid input message below if they type text instead of numbers
             }
             System.out.println("Invalid input. Please enter a number between 3 and 10.");
         }
@@ -36,13 +46,18 @@ public class FCFS {
                     System.out.print("Enter the process ID for Process" + (i + 1) + ": ");
                 }
                 
-                String id = scanner.next();
+                String id = scanner.nextLine().trim();
+                
+                if (id.isEmpty()) {
+                    System.out.println("Warning: Input cannot be empty. Please try again.");
+                    continue; // Loops back to ask for the Process ID again
+                }
                 
                 // THEE NEW FEATURE: STOP and CANCEL handled right at the ID prompt
                 if (id.equalsIgnoreCase("CANCEL")) {
                     while (true) {
                         System.out.print("Are you sure you want to cancel the program entirely? (Y/N): ");
-                        String confirm = scanner.next().toLowerCase();
+                        String confirm = scanner.nextLine().trim().toLowerCase();
                         
                         if (confirm.equals("y") || confirm.equals("yes")) {
                             System.out.println("Processing cancelled. Goodbye :D");
@@ -66,7 +81,7 @@ public class FCFS {
                     boolean confirmedStop = false;
                     while (true) {
                         System.out.print("Are you sure you want to stop adding and calculate now? (Y/N): ");
-                        String confirm = scanner.next().toLowerCase();
+                        String confirm = scanner.nextLine().trim().toLowerCase();
                         
                         if (confirm.equals("y") || confirm.equals("yes")) {
                             n = i; // Shrink the active process count
@@ -112,9 +127,22 @@ public class FCFS {
             // Validate the unique Arrival Time
             while (true) {
                 System.out.print("Enter the arrival time for " + processID[i] + ": ");
-                int at = scanner.nextInt();
-                boolean isUnique = true;
+                String atInput = scanner.nextLine().trim();
                 
+                if (atInput.isEmpty()) {
+                    System.out.println("Warning: Input cannot be empty. Please try again.");
+                    continue;
+                }
+                
+                int at = 0;
+                try {
+                    at = Integer.parseInt(atInput);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                    continue;
+                }
+                
+                boolean isUnique = true;
                 for (int j = 0; j < i; j++) {
                     if (arrivalTime[j] == at) {
                         isUnique = false;
@@ -130,8 +158,22 @@ public class FCFS {
             }
             
             // Input Burst Time
-            System.out.print("Enter burst time for " + processID[i] + ": ");
-            burstTime[i] = scanner.nextInt();
+            while (true) {
+                System.out.print("Enter burst time for " + processID[i] + ": ");
+                String btInput = scanner.nextLine().trim();
+                
+                if (btInput.isEmpty()) {
+                    System.out.println("Warning: Input cannot be empty. Please try again.");
+                    continue;
+                }
+                try {
+                    burstTime[i] = Integer.parseInt(btInput);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                }
+            }
+            
             System.out.println("-----------------------------------------");
         }
         
@@ -201,11 +243,9 @@ public class FCFS {
         // 6. Gantt chart output
         System.out.println("\n-----------------------------------------");
         System.out.println("Gantt Chart:");
-
         String topStr = "";
         String bottomStr = "";
         int timeTrack = 0;
-
         for (int i = 0; i < n; i++) { // IF the CPU is idle waiting for the next process
             if (timeTrack < arrivalTime[i]) {
                 topStr += "| Idle ";
@@ -216,11 +256,9 @@ public class FCFS {
                 }
                 timeTrack = arrivalTime[i];
             }
-
             // Process execution
             topStr += "| " + processID[i] + " ";
             bottomStr += timeTrack + "     ";
-
             // Calclate spaces based on Process ID length and time length to keep the Gantt chart aligned
             int spaces = 7 +  processID[i].length() - String.valueOf(timeTrack).length();
             for (int s = 0; s < spaces; s++) {
@@ -229,10 +267,8 @@ public class FCFS {
             
             timeTrack += burstTime[i];
         }
-
         topStr += "|";
         bottomStr += timeTrack; // Add the final time at the end of the Gantt chart
-
         System.out.println(topStr);
         System.out.println(bottomStr);
         System.out.println("-----------------------------------------");
